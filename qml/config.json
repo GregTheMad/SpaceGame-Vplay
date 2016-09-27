@@ -1,0 +1,8 @@
+{
+    "title": "SpaceGame",
+    "identifier": "com.yourcompany.wizardEVP.SpaceGame",
+    "orientation": "landscape",
+    "versioncode": 1,
+    "versionname": "1.0",
+    "stage": "test"
+}
