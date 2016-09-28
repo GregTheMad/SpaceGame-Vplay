@@ -6,19 +6,8 @@ import "entities"
 GameWindow {
     id: gameWindow
 
-    // You get free licenseKeys from http://v-play.net/licenseKey
-    // With a licenseKey you can:
-    //  * Publish your games & apps for the app stores
-    //  * Remove the V-Play Splash Screen or set a custom one (available with the Pro Licenses)
-    //  * Add plugins to monetize, analyze & improve your apps (available with the Pro Licenses)
-    //licenseKey: "<generate one from http://v-play.net/licenseKey>"
-
     activeScene: scene
 
-    // the size of the Window can be changed at runtime by pressing Ctrl (or Cmd on Mac) + the number keys 1-8
-    // the content of the logical scene size (480x320 for landscape mode by default) gets scaled to the window size based on the scaleMode
-    // you can set this size to any resolution you would like your project to start with, most of the times the one of your main target device
-    // this resolution is for iPhone 4 & iPhone 4S
     screenWidth: 960
     screenHeight: 640
 
@@ -59,6 +48,33 @@ GameWindow {
         Asteroid{
             x: 20
             y: 20
+        }
+
+        Timer {
+            id: timer
+            interval: generateRandomInterval()
+            running: true
+            repeat: true
+
+            onTriggered: {
+
+                var rot = utils.generateRandomValueBetween(0,360)
+                var rad = rot / 180 * Math.PI
+
+                var direction = Qt.point(scene.width/2 * Math.sin(rad), -scene.width/2 * Math.cos(rad))
+
+
+                entityManager.createEntityFromUrlWithProperties(
+                            Qt.resolvedUrl("entities/Asteroid.qml"),
+                            {"x": scene.width / 2 + direction.x, "y": scene.height / 2 +  direction.y, "rotation": rot + 180 + utils.generateRandomValueBetween(-10,10) })
+
+                timer.interval = scene.generateRandomInterval()
+                timer.restart()
+            }
+        }
+
+        function generateRandomInterval(){
+            return utils.generateRandomValueBetween(1000,3000)
         }
 
         focus: true

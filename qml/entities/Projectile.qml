@@ -9,7 +9,7 @@ EntityBase {
     width: 10
     height: 10
 
-    property real speed: 100000
+    property real speed: 10000
 
     Component.onCompleted: {
         applyForwardImpuls()
@@ -25,7 +25,7 @@ EntityBase {
         anchors.centerIn: parent
         radius: parent.width/2
 
-        density: 1
+        density: 0.1
         friction: 0
         restitution: 0
         body.linearDamping: 0

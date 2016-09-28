@@ -50,14 +50,14 @@ EntityBase {
 
         anchors.fill: parent
 
-        density: 0.02
+        density: 0.1
         friction: 0
         restitution: 0
         body.linearDamping: 0
         body.angularDamping: 0
 
         force: Qt.point(moveController.xAxis*thrusterForce,moveController.yAxis*thrusterForce)
-        torque: rotationController.xAxis * thrusterForce * 2
+        torque: rotationController.xAxis * thrusterForce * ship.height/4
     }
 
     //TODO: Implement better version with thrusters instead of simple dampening
@@ -86,7 +86,9 @@ EntityBase {
     {
         var imagePointInWorldCoord = mapToItem(scene, image.imagePoints[0].x, image.imagePoints[0].y)
 
-        entityManager.createEntityFromUrlWithProperties(Qt.resolvedUrl("Projectile.qml"), {"x": imagePointInWorldCoord.x, "y": imagePointInWorldCoord.y, "rotation": ship.rotation })
+        entityManager.createEntityFromUrlWithProperties(
+                    Qt.resolvedUrl("Projectile.qml"),
+                    {"x": imagePointInWorldCoord.x, "y": imagePointInWorldCoord.y, "rotation": ship.rotation })
     }
 
 }
