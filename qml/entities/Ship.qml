@@ -16,8 +16,11 @@ EntityBase {
     property alias rotationController: rotationController
 
     Image {
+        id: image
         anchors.fill: parent
         source: "../../assets/ship.png"
+
+        property list<Item> imagePoints:[Item{x: image.width/2+30}]
     }
 
     TwoAxisController {
@@ -38,8 +41,7 @@ EntityBase {
 
         inputActionsToKeyCode: {
             "left": Qt.Key_Q,
-            "right": Qt.Key_E,
-            "down": Qt.Key_X
+            "right": Qt.Key_E
         }
     }
 
@@ -51,8 +53,8 @@ EntityBase {
         density: 0.02
         friction: 0
         restitution: 0
-        body.linearDamping: rotationController.yAxis
-        body.angularDamping: rotationController.yAxis
+        body.linearDamping: 0
+        body.angularDamping: 0
 
         force: Qt.point(moveController.xAxis*thrusterForce,moveController.yAxis*thrusterForce)
         torque: rotationController.xAxis * thrusterForce * 2
@@ -60,23 +62,31 @@ EntityBase {
 
     //TODO: Implement better version with thrusters instead of simple dampening
     Keys.onPressed: {
-        if (event.key === Qt.Key_X)
+        if (event.key === Qt.Key_Space)
         {
             boxCollider.linearDamping = 1
             boxCollider.angularDamping = 1
         }
+
+        if (event.key === Qt.Key_Tab)
+        {
+            fireProjectile()
+        }
     }
 
     Keys.onReleased: {
-        if (event.key === Qt.Key_X)
+        if (event.key === Qt.Key_Space)
         {
             boxCollider.linearDamping = 0
             boxCollider.angularDamping = 0
         }
     }
 
-    function handleInputActions(action)
+    function fireProjectile()
     {
+        var imagePointInWorldCoord = mapToItem(scene, image.imagePoints[0].x, image.imagePoints[0].y)
+
+        entityManager.createEntityFromUrlWithProperties(Qt.resolvedUrl("Projectile.qml"), {"x": imagePointInWorldCoord.x, "y": imagePointInWorldCoord.y, "rotation": ship.rotation })
     }
 
 }

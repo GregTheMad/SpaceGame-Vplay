@@ -56,6 +56,11 @@ GameWindow {
             y: parent.height/2
         }
 
+        Asteroid{
+            x: 20
+            y: 20
+        }
+
         focus: true
         Keys.forwardTo: [playerShip, playerShip.moveController,playerShip.rotationController]
     }
