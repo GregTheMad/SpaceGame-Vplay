@@ -19,10 +19,10 @@ GameWindow {
     Scene {
         id: scene
 
-        // the "logical size" - the scene content is auto-scaled to match the GameWindow size
         width: 480
         height: 320
 
+        //Initializing PhysicsWorld
         PhysicsWorld{
             id: world
             updatesPerSecondForPhysics: 60
@@ -45,10 +45,39 @@ GameWindow {
             y: parent.height/2
         }
 
-        Asteroid{
-            x: 20
-            y: 20
+        //Healthbar:
+
+        Rectangle{
+            id: healthbarBorder
+            x:9
+            y:9
+            width: 102
+            height: 12
+            color: "white"
         }
+
+        Rectangle{
+            id: healthbarBackground
+             x: 10
+             y: 10
+             width:100
+             height:10
+             color: "black"
+
+        }
+
+        Rectangle{
+            id: healthbar
+            x: 10
+            y: 10
+            width: (playerShip.health.currentHealth / playerShip.health.maxHealth) * 100
+            height: 10
+            color: "green"
+        }
+
+        //Asteroid Spawner:
+
+        property real asteroidCounter: 0
 
         Timer {
             id: timer
@@ -58,6 +87,8 @@ GameWindow {
 
             onTriggered: {
 
+                parent.asteroidCounter += 1
+
                 var rot = utils.generateRandomValueBetween(0,360)
                 var rad = rot / 180 * Math.PI
 
@@ -66,7 +97,10 @@ GameWindow {
 
                 entityManager.createEntityFromUrlWithProperties(
                             Qt.resolvedUrl("entities/Asteroid.qml"),
-                            {"x": scene.width / 2 + direction.x, "y": scene.height / 2 +  direction.y, "rotation": rot + 180 + utils.generateRandomValueBetween(-10,10) })
+                            {"x": scene.width / 2 + direction.x,
+                             "y": scene.height / 2 +  direction.y,
+                             "rotation": rot + 180 + utils.generateRandomValueBetween(-30,30),
+                            "entityId": "asteroid-" + parent.asteroidCounter})
 
                 timer.interval = scene.generateRandomInterval()
                 timer.restart()
@@ -76,6 +110,8 @@ GameWindow {
         function generateRandomInterval(){
             return utils.generateRandomValueBetween(1000,3000)
         }
+
+        //Handing the Key-Input to the playerShip
 
         focus: true
         Keys.forwardTo: [playerShip, playerShip.moveController,playerShip.rotationController]

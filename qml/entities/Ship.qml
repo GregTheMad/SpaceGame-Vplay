@@ -5,7 +5,7 @@ import "../items"
 
 EntityBase {
     id: ship
-    entityType: "customEntity"
+    entityType: "ship"
 
     width: 40
     height: 60
@@ -16,8 +16,10 @@ EntityBase {
 
     property alias moveController: moveController
     property alias rotationController: rotationController
+    property alias health: health
 
     Health{
+        id: health
         maxHealth: 50
     }
 
@@ -26,13 +28,11 @@ EntityBase {
         anchors.fill: parent
         source: "../../assets/ship.png"
 
-        property list<Item> imagePoints:[Item{x: image.width/2+30}]
+        property list<Item> imagePoints:[Item{x: image.width/2; y: -20}]
     }
 
     TwoAxisController {
         id: moveController
-
-        onInputActionPressed: handleInputActions(actionName)
 
         inputActionsToKeyCode: {
             "up" : Qt.Key_S,

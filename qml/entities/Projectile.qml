@@ -33,6 +33,8 @@ EntityBase {
         body.linearDamping: 0
         body.angularDamping: 0
 
+        bullet: true
+
         fixture.onBeginContact:{
             var fixture = other
             var body = other.getBody()

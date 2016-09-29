@@ -13,6 +13,8 @@ EntityBase {
 
     property real speedForce: 10000
 
+    property alias health: health
+
     Component.onCompleted: {
         applyForwardImpuls()
     }
@@ -39,6 +41,22 @@ EntityBase {
         restitution: 0
         body.linearDamping: 0
         body.angularDamping: 0
+
+        fixture.onBeginContact:{
+            var fixture = other
+            var body = other.getBody()
+            var otherEntity = body.target
+
+            var collidingType = otherEntity.entityType
+
+            if (collidingType === "ship")
+            {
+                var health = otherEntity.getComponent("health")
+
+                if (health !== "unfined")
+                    health.applyDamage(10)
+            }
+        }
     }
 
     function applyForwardImpuls(){
