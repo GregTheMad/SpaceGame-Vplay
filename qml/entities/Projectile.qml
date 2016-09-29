@@ -11,6 +11,8 @@ EntityBase {
 
     property real speed: 10000
 
+    property real damage: 5
+
     Component.onCompleted: {
         applyForwardImpuls()
     }
@@ -38,6 +40,13 @@ EntityBase {
 
             var collidingType = otherEntity.entityType
 
+            if (collidingType === "asteroid")
+            {
+                var health = otherEntity.getComponent("health")
+
+                if (health !== "unfined")
+                    health.applyDamage(damage)
+            }
             projectile.removeEntity()
             return
         }

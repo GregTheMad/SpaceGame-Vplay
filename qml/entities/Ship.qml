@@ -1,6 +1,8 @@
 import VPlay 2.0
 import QtQuick 2.0
 
+import "../items"
+
 EntityBase {
     id: ship
     entityType: "customEntity"
@@ -10,10 +12,14 @@ EntityBase {
 
     rotation: 45
 
-    property real thrusterForce: 5000
+    property real thrusterForce: 10000
 
     property alias moveController: moveController
     property alias rotationController: rotationController
+
+    Health{
+        maxHealth: 50
+    }
 
     Image {
         id: image
@@ -36,6 +42,7 @@ EntityBase {
         }
     }
 
+    //FIXME: Make this a 1DController of sorts, or find a use for the second axis
     TwoAxisController{
         id: rotationController
 
@@ -57,7 +64,10 @@ EntityBase {
         body.angularDamping: 0
 
         force: Qt.point(moveController.xAxis*thrusterForce,moveController.yAxis*thrusterForce)
+
         torque: rotationController.xAxis * thrusterForce * ship.height/4
+
+
     }
 
     //TODO: Implement better version with thrusters instead of simple dampening

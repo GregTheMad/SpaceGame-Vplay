@@ -1,10 +1,12 @@
 import VPlay 2.0
 import QtQuick 2.0
 
+import "../items"
+
 EntityBase {
     id: asteroid
-    entityId: "entity"
-    entityType: "customEntity"
+    entityId: "asteroidEntity"
+    entityType: "asteroid"
 
     width: 30
     height: 30
@@ -13,6 +15,12 @@ EntityBase {
 
     Component.onCompleted: {
         applyForwardImpuls()
+    }
+
+    Health{
+        id: health
+        maxHealth: 10
+        objectName: "health"
     }
 
     Image {
