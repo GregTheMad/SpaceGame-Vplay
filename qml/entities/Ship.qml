@@ -17,6 +17,7 @@ EntityBase {
     property alias moveController: moveController
     property alias rotationController: rotationController
     property alias health: health
+    property alias collider: collider
 
     Health{
         id: health
@@ -53,7 +54,7 @@ EntityBase {
     }
 
     BoxCollider{
-        id: boxCollider
+        id: collider
 
         anchors.fill: parent
 
@@ -67,15 +68,30 @@ EntityBase {
 
         torque: rotationController.xAxis * thrusterForce * ship.height/4
 
+        body.onPositionChanged:
+        {
+            //TODO: reduce calculations and replace them with properties
 
+            if (ship.x < -ship.height)
+                ship.x += scene.width + ship.height
+
+            if (ship.x > scene.width + ship.height)
+                ship.x -= scene.width + ship.height
+
+            if (ship.y < -ship.height)
+                ship.y += scene.height + ship.height
+
+            if (ship.y > scene.height + ship.height)
+                ship.y -= scene.height + ship.height
+        }
     }
 
     //TODO: Implement better version with thrusters instead of simple dampening
     Keys.onPressed: {
         if (event.key === Qt.Key_Space)
         {
-            boxCollider.linearDamping = 1
-            boxCollider.angularDamping = 1
+            collider.linearDamping = 1
+            collider.angularDamping = 1
         }
 
         if (event.key === Qt.Key_Tab)
@@ -87,8 +103,8 @@ EntityBase {
     Keys.onReleased: {
         if (event.key === Qt.Key_Space)
         {
-            boxCollider.linearDamping = 0
-            boxCollider.angularDamping = 0
+            collider.linearDamping = 0
+            collider.angularDamping = 0
         }
     }
 

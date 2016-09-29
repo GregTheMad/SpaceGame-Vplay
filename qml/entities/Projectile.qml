@@ -6,10 +6,10 @@ EntityBase {
     entityId: "entity"
     entityType: "projectile"
 
-    width: 10
+    width: 5
     height: 10
 
-    property real speed: 10000
+    property real speed: 5000
 
     property real damage: 5
 
@@ -17,15 +17,14 @@ EntityBase {
         applyForwardImpuls()
     }
 
-    Rectangle{
+    Image{
         anchors.fill: parent
-        color: "red"
+        source: "../../assets/projectile.png"
     }
 
-    CircleCollider{
+    BoxCollider{
         id: collider
-        anchors.centerIn: parent
-        radius: parent.width/2
+        anchors.fill: parent
 
         density: 0.1
         friction: 0

@@ -26,6 +26,8 @@ GameWindow {
         PhysicsWorld{
             id: world
             updatesPerSecondForPhysics: 60
+
+
         }
 
         ParallaxItem {
@@ -37,6 +39,8 @@ GameWindow {
                 source: "../assets/starfield.jpg"
             }
         }
+
+        property alias playerShip: playerShip
 
         Ship {
             id: playerShip
