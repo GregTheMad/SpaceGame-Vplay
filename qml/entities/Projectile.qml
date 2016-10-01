@@ -3,7 +3,7 @@ import QtQuick 2.0
 
 EntityBase {
     id: projectile
-    entityId: "entity"
+    entityId: "projectileEntity"
     entityType: "projectile"
 
     width: 5
@@ -46,7 +46,13 @@ EntityBase {
                 var health = otherEntity.getComponent("health")
 
                 if (health !== "unfined")
+                {
+                    if (health.currentHealth - damage <= 0){
+                        scene.playerScore++
+                    }
+
                     health.applyDamage(damage)
+                }
             }
             projectile.removeEntity()
             return

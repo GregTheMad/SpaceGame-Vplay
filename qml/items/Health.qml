@@ -12,7 +12,9 @@ Item {
         {
             //TODO: Kill the parent in a dynamic, parent controlled manner.
             console.debug("parent type: " + parent)
-            parent.removeEntity()
+
+            //Using the visibility to communicate death
+            parent.visible = false
         }
     }
 

@@ -22,6 +22,7 @@ EntityBase {
     Health{
         id: health
         maxHealth: 50
+        objectName: "health"
     }
 
     Image {
@@ -84,6 +85,25 @@ EntityBase {
             if (ship.y > scene.height + ship.height)
                 ship.y -= scene.height + ship.height
         }
+
+        fixture.onBeginContact:{
+            var fixture = other
+            var body = other.getBody()
+            var otherEntity = body.target
+
+            var collidingType = otherEntity.entityType
+
+            if (collidingType === "asteroid")
+            {
+                var health = otherEntity.getComponent("health")
+
+                if (health !== "unfined")
+                {
+                    health.applyDamage(10)
+                }
+            }
+            return
+        }
     }
 
     //TODO: Implement better version with thrusters instead of simple dampening
@@ -106,6 +126,12 @@ EntityBase {
             collider.linearDamping = 0
             collider.angularDamping = 0
         }
+    }
+
+    onVisibleChanged: {
+        moveController.enabled = false
+        rotationController.enabled = false
+        collider.enabled = false
     }
 
     function fireProjectile()

@@ -30,14 +30,9 @@ GameWindow {
 
         }
 
-        ParallaxItem {
-            id: parallxBackgroung
-
-            ratio: Qt.point(0.1, 0.1)
-
-            Image{
-                source: "../assets/starfield.jpg"
-            }
+        Image{
+            anchors.fill: parent
+            source: "../assets/starfield.jpg"
         }
 
         property alias playerShip: playerShip
@@ -47,6 +42,75 @@ GameWindow {
 
             x: parent.width/2
             y: parent.height/2
+
+            onVisibleChanged: {
+                if (playerShip.visible == false)
+                    scene.showDeadMessage = true
+            }
+        }
+
+        //GameOver Message
+
+        property bool showDeadMessage: false
+
+        Rectangle{
+
+            visible: scene.showDeadMessage
+
+            width: 200
+            height: 100
+
+            x: (scene.width/2) - (width/2)
+            y: (scene.height/2) - (height/2)
+            z: 0.9
+
+            Text{
+             anchors.centerIn: parent
+
+             horizontalAlignment: Text.AlignHCenter
+
+             //spelling errors on puropose.
+             //What purpose? ... Beats me ...
+             text: "u ded\nyou're highscore was: " + scene.playerScore
+            }
+        }
+
+        //Score:
+
+        property int playerScore: 0
+
+        Rectangle{
+            id: scoreBackground
+            x: parent.width - 9 - width
+            y: 9
+            z: 0.9
+
+            width: 32
+            height: 12
+
+            color: "dark grey"
+        }
+
+        Text{
+            id: scoreText
+            x: parent.width - 10 - width
+            y: 10
+
+            z: 1
+
+            font.pixelSize: 10
+
+            horizontalAlignment: Text.AlignRight
+
+            color: "black"
+
+            text: scene.playerScore
+        }
+
+        function increaseScore(value){
+            playerScore += value
+
+            console.log("score: " + playerScore)
         }
 
         //Healthbar:
@@ -55,6 +119,7 @@ GameWindow {
             id: healthbarBorder
             x:9
             y:9
+            z: 0.8
             width: 102
             height: 12
             color: "white"
@@ -64,6 +129,7 @@ GameWindow {
             id: healthbarBackground
              x: 10
              y: 10
+             z: 0.9
              width:100
              height:10
              color: "black"
@@ -74,6 +140,7 @@ GameWindow {
             id: healthbar
             x: 10
             y: 10
+            z: 1
             width: (playerShip.health.currentHealth / playerShip.health.maxHealth) * 100
             height: 10
             color: "green"
@@ -85,7 +152,7 @@ GameWindow {
 
         Timer {
             id: timer
-            interval: generateRandomInterval()
+            interval: scene.generateRandomInterval()
             running: true
             repeat: true
 
@@ -118,6 +185,7 @@ GameWindow {
         //Handing the Key-Input to the playerShip
 
         focus: true
+
         Keys.forwardTo: [playerShip, playerShip.moveController,playerShip.rotationController]
     }
 }

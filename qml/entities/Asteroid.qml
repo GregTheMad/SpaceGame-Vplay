@@ -59,6 +59,10 @@ EntityBase {
         }
     }
 
+    onVisibleChanged: {
+        asteroid.removeEntity()
+    }
+
     function applyForwardImpuls(){
         var rad = asteroid.rotation / 180 * Math.PI
 
