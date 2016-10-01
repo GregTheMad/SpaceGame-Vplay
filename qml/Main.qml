@@ -26,8 +26,6 @@ GameWindow {
         PhysicsWorld{
             id: world
             updatesPerSecondForPhysics: 60
-
-
         }
 
         Image{
@@ -69,9 +67,7 @@ GameWindow {
 
              horizontalAlignment: Text.AlignHCenter
 
-             //spelling errors on puropose.
-             //What purpose? ... Beats me ...
-             text: "u ded\nyou're highscore was: " + scene.playerScore
+             text: "You died.\nYour highscore was: " + scene.playerScore
             }
         }
 
@@ -171,7 +167,7 @@ GameWindow {
                             {"x": scene.width / 2 + direction.x,
                              "y": scene.height / 2 +  direction.y,
                              "rotation": rot + 180 + utils.generateRandomValueBetween(-30,30),
-                            "entityId": "asteroid-" + parent.asteroidCounter})
+                             "entityId": "asteroid-" + parent.asteroidCounter})
 
                 timer.interval = scene.generateRandomInterval()
                 timer.restart()
@@ -187,5 +183,62 @@ GameWindow {
         focus: true
 
         Keys.forwardTo: [playerShip, playerShip.moveController,playerShip.rotationController]
+
+        //HUD
+
+        SimpleButton{
+            id: fireButton
+            text: "Fire"
+
+            width: 50
+            height: 50
+            x: scene.width - width - 10
+            y: scene.height - height - 10
+
+            onClicked: playerShip.fireProjectile()
+        }
+
+        SimpleButton{
+            id: turnLeftButton
+            text: "Left"
+
+            width: 50
+            height: 50
+            x: 10
+            y: scene.height - height - 10 - 100
+        }
+
+        SimpleButton{
+            id: turnRightButton
+            text: "Right"
+
+            width: 50
+            height: 50
+            x: width + 20
+            y: scene.height - height - 10 - 100
+        }
+
+        SimpleButton{
+            id: brakeButton
+            text: "Brake"
+
+            width: 50
+            height: 50
+            x: 110
+            y: scene.height - height - 10
+        }
+    }
+
+    JoystickControllerHUD{
+        anchors.bottom: parent.bottom
+
+        joystickRadius: 100
+
+        source: "../assets/HUD/circle.png"
+        thumbSource: "../assets/HUD/circle2.png"
+
+        property variant playerTwoxisController: scene.playerShip.getComponent("moveController")
+        onControllerXPositionChanged: playerTwoxisController.xAxis = controllerXPosition;
+        onControllerYPositionChanged: playerTwoxisController.yAxis = -controllerYPosition;
     }
 }

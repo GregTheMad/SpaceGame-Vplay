@@ -35,6 +35,7 @@ EntityBase {
 
     TwoAxisController {
         id: moveController
+        objectName: "moveController"
 
         inputActionsToKeyCode: {
             "up" : Qt.Key_S,
@@ -47,6 +48,7 @@ EntityBase {
     //FIXME: Make this a 1DController of sorts, or find a use for the second axis
     TwoAxisController{
         id: rotationController
+        objectName: "rotationController"
 
         inputActionsToKeyCode: {
             "left": Qt.Key_Q,
