@@ -145,6 +145,7 @@ GameWindow {
         //Asteroid Spawner:
 
         property real asteroidCounter: 0
+        property real sceneDiagonal: Math.sqrt(scene.width*scene.width + scene.height*scene.height)
 
         Timer {
             id: timer
@@ -159,15 +160,16 @@ GameWindow {
                 var rot = utils.generateRandomValueBetween(0,360)
                 var rad = rot / 180 * Math.PI
 
-                var direction = Qt.point(scene.width/2 * Math.sin(rad), -scene.width/2 * Math.cos(rad))
+                var direction = Qt.point(scene.sceneDiagonal * Math.sin(rad), -scene.sceneDiagonal * Math.cos(rad))
 
 
                 entityManager.createEntityFromUrlWithProperties(
                             Qt.resolvedUrl("entities/Asteroid.qml"),
                             {"x": scene.width / 2 + direction.x,
                              "y": scene.height / 2 +  direction.y,
-                             "rotation": rot + 180 + utils.generateRandomValueBetween(-30,30),
-                             "entityId": "asteroid-" + parent.asteroidCounter})
+                             "rotation": rot + 180 + utils.generateRandomValueBetween(-10,10),
+                             "entityId": "asteroid-" + parent.asteroidCounter,
+                            "speedForce": 9000 + utils.generateRandomValueBetween(0,2000)})
 
                 timer.interval = scene.generateRandomInterval()
                 timer.restart()
@@ -198,6 +200,8 @@ GameWindow {
             onClicked: playerShip.fireProjectile()
         }
 
+        property variant playerRotController: scene.playerShip.getComponent("rotationController")
+
         SimpleButton{
             id: turnLeftButton
             text: "Left"
@@ -206,6 +210,11 @@ GameWindow {
             height: 50
             x: 10
             y: scene.height - height - 10 - 100
+
+            onPressedChanged: {
+                if (pressed) scene.playerRotController.xAxis = -1
+                    else scene.playerRotController.xAxis = 0
+            }
         }
 
         SimpleButton{
@@ -216,6 +225,11 @@ GameWindow {
             height: 50
             x: width + 20
             y: scene.height - height - 10 - 100
+
+            onPressedChanged: {
+                if (pressed) scene.playerRotController.xAxis = 1
+                    else scene.playerRotController.xAxis = 0
+            }
         }
 
         SimpleButton{
@@ -226,6 +240,11 @@ GameWindow {
             height: 50
             x: 110
             y: scene.height - height - 10
+
+            onPressedChanged: {
+                if (pressed) playerShip.brake()
+                else playerShip.releaseBrake()
+            }
         }
     }
 

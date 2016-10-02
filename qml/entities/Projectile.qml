@@ -35,6 +35,7 @@ EntityBase {
         bullet: true
 
         fixture.onBeginContact:{
+
             var fixture = other
             var body = other.getBody()
             var otherEntity = body.target
@@ -56,6 +57,17 @@ EntityBase {
             }
             projectile.removeEntity()
             return
+        }
+
+        property real margine: scene.sceneDiagonla * 2
+
+        body.onPositionChanged: {
+            if (projectile.x < margine ||
+                projectile.x > scene.width + margine ||
+                    projectile.y < margine ||
+                    projectile.y > scene.height + margine)
+                projectile.removeEntity()
+
         }
     }
 

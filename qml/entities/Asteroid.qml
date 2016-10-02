@@ -57,6 +57,17 @@ EntityBase {
                     health.applyDamage(10)
             }
         }
+
+        property real margine: scene.sceneDiagonla * 2
+
+        body.onPositionChanged: {
+            if (asteroid.x < margine ||
+                asteroid.x > scene.width + margine ||
+                    asteroid.y < margine ||
+                    asteroid.y > scene.height + margine)
+                asteroid.removeEntity()
+
+        }
     }
 
     onVisibleChanged: {

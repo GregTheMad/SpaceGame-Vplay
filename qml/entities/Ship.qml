@@ -108,26 +108,14 @@ EntityBase {
         }
     }
 
-    //TODO: Implement better version with thrusters instead of simple dampening
     Keys.onPressed: {
-        if (event.key === Qt.Key_Space)
-        {
-            collider.linearDamping = 1
-            collider.angularDamping = 1
-        }
-
-        if (event.key === Qt.Key_Tab)
-        {
-            fireProjectile()
-        }
+        if (event.key === Qt.Key_Space) brake()
     }
 
+    Keys.onTabPressed: fireProjectile()
+
     Keys.onReleased: {
-        if (event.key === Qt.Key_Space)
-        {
-            collider.linearDamping = 0
-            collider.angularDamping = 0
-        }
+        if (event.key === Qt.Key_Space) releaseBrake()
     }
 
     onVisibleChanged: {
@@ -143,6 +131,20 @@ EntityBase {
         entityManager.createEntityFromUrlWithProperties(
                     Qt.resolvedUrl("Projectile.qml"),
                     {"x": imagePointInWorldCoord.x, "y": imagePointInWorldCoord.y, "rotation": ship.rotation })
+    }
+
+
+    //TODO: Implement better version with thrusters instead of simple dampening
+    function brake()
+    {
+        collider.linearDamping = 1
+        collider.angularDamping = 1
+    }
+
+    function releaseBrake()
+    {
+        collider.linearDamping = 0
+        collider.angularDamping = 0
     }
 
 }
