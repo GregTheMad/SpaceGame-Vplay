@@ -1,3 +1,3 @@
 # SpaceGame-Vplay
 
-Only a bare project till now, move along, nothing to see.
+Simple Asteroid-like Space Game written in the V-Play Engine.
